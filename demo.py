@@ -1,9 +1,9 @@
 import joblib
 import json
+import argparse
 import numpy as np
 import spotipy
 import scipy
-import argparse
 
 
 def arg_parse():
