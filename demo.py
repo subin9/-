@@ -15,7 +15,7 @@ def arg_parse():
     return args
 
 
-def get_song(uri: str, client_id: str, client_secret: str) -> list:
+def get_song(client_id: str, client_secret: str, uri: str):
     model = joblib.load('classification_model.pkl')
     with open('song_distributions.json', 'r', encoding='utf-8-sig') as f:
         songs = json.load(f)
@@ -43,13 +43,17 @@ def get_song(uri: str, client_id: str, client_secret: str) -> list:
         if song_lists[idx][1] > temp:
             song_lists[idx][0] = i
             song_lists[idx][1] = temp
-
-    return song_lists
+    song_lists.sort(key=lambda x: x[1])
+    print("가장 비슷한 곡은 "+str(song_lists[0][2])+"의 "+str(song_lists[0][0])+"입니다.")
+    print("그 외 다른 그룹의 비슷한 곡으로는,")
+    for i in range(1,3):
+        print(str(song_lists[i][2])+"의 "+str(song_lists[i][0])+",")
+    print(str(song_lists[3][2])+"의 "+str(song_lists[3][0])+"이(가) 있습니다.")
 
 
 def main():
     args = arg_parse()
-    print(get_song(args.clientid, args.clientsecret, args.uri))
+    get_song(args.clientid, args.clientsecret, args.uri)
 
 
 if __name__ == '__main__':
